@@ -23,6 +23,15 @@ distribution you use. Here we show it for a SUSE based distribution.
 ```
 zypper install osc
 ```
+For a number of other distributions installation repositories are
+available at:
+
+```
+ https://download.opensuse.org/repositories/openSUSE:/Tools/<distribution>
+```
+You will have to use your distros package management tool to add this
+repository to your installation source and install `osc`
+
 Next, you will have to let `osc` know about your account OBS account
 and credentials. See next chapter.
 Note that `osc` has a build in help. Type `osc help` to get a list of
