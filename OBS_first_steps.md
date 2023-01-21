@@ -16,7 +16,8 @@ You will have to chose a user name and password.
 
 ## Get the CLI Client ##
 
-The OBS client `osc` is available for a number of Linux distributions.
+The OBS client `osc` is available for a number of Linux distributions,
+though not for the Mac OS.
 The command to use to install it on your distribution depends on the
 distribution you use. Here we show it for a SUSE based distribution.
 
