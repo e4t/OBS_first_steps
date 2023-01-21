@@ -161,7 +161,7 @@ zypper install obs-service-download_files
 ```
 Once this is downloaded, run
 ```
-zypper service run download_files
+zypper service disabledrun download_files
 ```
 to download the source package. If you need to rename the source package
 before saving it, you may add the new file name at the end, separated by
