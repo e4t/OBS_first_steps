@@ -106,10 +106,7 @@ Once you're done editing, you may want to:
   run `osc results`. This will also show the status of the build of a specific
   project or package (depending if executed from the project or package
   directory).
-- Check your results back into the package:
-  ```
-  osc ci [-m "Commit Message"]
-  ```
+- Add a changelog entry:
   Since each submission to openSUSE:Factory will require a changelog entry,
   it is a good idea to create one when you are done editing your changes
   - right before checkin. In OBS changelog entries are not added to the
@@ -124,24 +121,64 @@ Once you're done editing, you may want to:
   ```
   osc vc -e
   ```
+  When you have updated the package to a new upstream version, you should
+  add what has changed compared to the old version. Usually you find this
+  information in a file like 'NEWS' or 'CHANGELOG' in the sources.
+- Check your results back into OBS:
+  ```
+  osc ci [-m "Commit Message"]
+  ```
   If the commit message is ommitted, `osc ci` will open an editor to add
   the commit message and pre-populate it with the additions to the changes
   file since the last checkin.
-Once the changes have been checked back into the package, OBS will attempt
-to rebuild each repository/arch specified for the package.
-SO far, the changes are only available in the branch (copy) of the package
-in your OBS home. Generally, packages are maintained in their 'devel project',
-only from there, they may be submitted to `openSUSE:Factory`. To submit a
-package back to the project you have forked it from, you may run:
-```
-osc sr [-m 'Comment']
-```
-Normally, `osc sr` takes a submission target as argument. In this case
-however, `osc` has recorded the project you have branched from and will
-use this as the default target.
-If you ommit the comment, an editor will be opened and you are able to
-add a comment yourself. If you have updated the changes file since the
-last submission, the editor will be pre-populated with the additions.
+- Check build status:
+  Once the changes have been checked back into the package, OBS will attempt
+  to rebuild each repository/arch specified for the package.
+  It's a good idea to check the build results and if the build failed, do
+  the necessary fixes.
+  Run
+  ```
+  osc results -v
+  ```
+  to get the build status. If it says `failed`, something went wrong.
+  To find out what caused the failure, run:
+  ```
+  osc buildlog <repository> <architecture>
+  ```
+  The information what `<repository>` and `<architecture>` to use can
+  be taken from the output of `osc results`: pass it to `osc buildlog`
+  in the same order as printed.
+  NOTE: The build may fail for repositories especially for older products
+  due to missing dependencies. In this case, if you do not care to support
+  this older product, you may savely ignore the failure.
+  At a minimum, you should make sure the package builds for the
+  `openSUSE_Tumbleweed` or `openSUSE_Factory` repository - whichever is
+  listed.
+  Also, a build may fail for some enterprise product repositories likeL
+  `openSUSE_Backports_SLE-15-SP<N>` or `15.<N>`: this is due to the fact
+  that a separate build for Leap/PackageHub is not allowed since the package
+  is shipped on the enterprise product already. You will see a message like
+  this on the output of `osc buildlog`:
+  ```
+  <package-name>: E: SUSE_Backports_policy-SLE_conflict (Badness: 10000)
+  Package with name <package-name> already in SLE
+  ```
+  In this case, there is nothing to worry about if the corresponding build
+  for `SLE_15_SP<N>` succeeds.
+- Submit changes back to the development project:
+  So far, the changes are only available in the branch (copy) of the package
+  in your OBS home. Generally, packages are maintained in their 'devel project',
+  only from there, they may be submitted to `openSUSE:Factory`. To submit a
+  package back to the project you have forked it from, you may run:
+  ```
+  osc sr [-m 'Comment']
+  ```
+  Normally, `osc sr` takes a submission target as argument. In this case
+  however, `osc` has recorded the project you have branched from and will
+  use this as the default target.
+  If you ommit the comment, an editor will be opened and you are able to
+  add a comment yourself. If you have updated the changes file since the
+  last submission, the editor will be pre-populated with the additions.
 
 ## Useful Hints ##
 
